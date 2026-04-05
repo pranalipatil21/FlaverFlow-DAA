@@ -184,7 +184,7 @@ FlavorFlow_System/
 
 Step 1 — Clone Repository
 
-git clone https://github.com/yourusername/FlavorFlow_System.git
+git clone
 
 cd FlavorFlow_System
 
