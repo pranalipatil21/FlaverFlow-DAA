@@ -143,31 +143,53 @@ Language	Python 3.10+
 Framework	Streamlit
 Visualization	Plotly Express
 Data Handling	Pandas
+
 Environment	Virtual Environment (venv)
+
+
 📂 Folder Structure
 FlavorFlow_System/
 │
 ├── .venv/                  # Virtual Environment
+
 ├── main.py                 # Primary UI and Integration
+
 ├── requirements.txt        # Dependencies
+
 │
 ├── core/                   # Algorithm Implementations
+
 │   ├── searching.py        # Binary Search, Karatsuba
+
 │   ├── optimization.py     # 0/1 Knapsack, Greedy Knapsack
+
 │   ├── scheduling.py       # Job Scheduling
+
 │   ├── pathfinding.py      # Dijkstra, Floyd-Warshall
+
 │   └── constraints.py      # Graph Coloring, TSP B&B
 │
 ├── data/                   # Mock Database
+
 │   └── canteen_data.py     # Menu items, Prices, Stall Map
+
 │
 └── utils/                  # Helper Utilities
+
     └── metrics.py          # Execution Time Measurements
+    
+
+    
 ⚙️ Installation & Setup
+
 Step 1 — Clone Repository
+
 git clone https://github.com/yourusername/FlavorFlow_System.git
+
 cd FlavorFlow_System
+
 Step 2 — Create Virtual Environment
+
 python -m venv .venv
 
 Activate:
@@ -183,6 +205,8 @@ Step 3 — Install Dependencies
 pip install -r requirements.txt
 Step 4 — Run Application
 streamlit run main.py
+
+
 📊 Algorithmic Lab
 
 The system includes a Performance Lab that allows users to:
