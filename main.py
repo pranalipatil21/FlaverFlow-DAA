@@ -12,27 +12,28 @@ from core.constraints import graph_coloring, tsp_branch_and_bound
 # Page Settings
 st.set_page_config(page_title="FlavorFlow Pro | DAA Academic Project", layout="wide")
 
-# --- GLOBAL CSS: PURE WHITE THEME, ORANGE ACCENTS, BLACK TEXT ---
+# --- GLOBAL CSS: APPETIZING LIGHT GLASSMORPHISM THEME ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
     :root {
-        --bg: #f4f6fb;
-        --surface: rgba(255, 255, 255, 0.92);
+        --bg: #fdfaf6;
+        --surface: rgba(255, 255, 255, 0.75);
         --surface-strong: #ffffff;
         --surface-soft: #fff8f4;
-        --border: rgba(15, 23, 42, 0.08);
-        --text: #0f172a;
-        --muted: #5b6475;
-        --accent: #ff5a1f;
-        --accent-deep: #d94816;
-        --accent-2: #0f766e;
+        --border: rgba(15, 23, 42, 0.05);
+        --text: #1f2937;
+        --muted: #64748b;
+        --accent: #ff6b35;
+        --accent-deep: #fb923c;
+        --accent-2: #10b981;
         --accent-3: #1d4ed8;
-        --shadow: 0 24px 72px rgba(15, 23, 42, 0.12);
-        --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
-        --radius-xl: 30px;
-        --radius-lg: 22px;
+        --shadow: 0 32px 64px rgba(255, 107, 53, 0.08);
+        --shadow-soft: 0 16px 32px rgba(15, 23, 42, 0.04);
+        --shadow-hover: 0 24px 48px rgba(255, 107, 53, 0.16);
+        --radius-xl: 32px;
+        --radius-lg: 24px;
         --radius-md: 16px;
     }
 
@@ -43,10 +44,9 @@ st.markdown("""
 
     .stApp {
         background:
-            radial-gradient(circle at top left, rgba(255, 90, 31, 0.14), transparent 26%),
-            radial-gradient(circle at 85% 10%, rgba(29, 78, 216, 0.10), transparent 18%),
-            radial-gradient(circle at top right, rgba(15, 118, 110, 0.10), transparent 24%),
-            linear-gradient(180deg, #fffdfb 0%, var(--bg) 100%);
+            radial-gradient(circle at top left, rgba(255, 107, 53, 0.08), transparent 30%),
+            radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.06), transparent 25%),
+            linear-gradient(180deg, #fffdfa 0%, var(--bg) 100%);
         color: var(--text) !important;
     }
 
@@ -55,9 +55,8 @@ st.markdown("""
         position: fixed;
         inset: 0;
         pointer-events: none;
-        background-image: linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
-        background-size: 32px 32px;
-        mask-image: linear-gradient(180deg, rgba(0,0,0,0.18), transparent 70%);
+        background-image: radial-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+        background-size: 24px 24px;
         z-index: 0;
     }
 
@@ -69,7 +68,7 @@ st.markdown("""
 
     h1, h2, h3, h4 {
         font-family: 'Space Grotesk', sans-serif !important;
-        color: var(--text) !important;
+        color: #111827 !important;
         letter-spacing: -0.03em;
     }
 
@@ -84,33 +83,24 @@ st.markdown("""
     }
 
     .hero-shell {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 247, 242, 0.92));
-        border: 1px solid rgba(255, 90, 31, 0.14);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 247, 242, 0.8));
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
         border-radius: var(--radius-xl);
-        padding: 2rem 2rem 1.55rem;
+        padding: 2.2rem 2.2rem 1.8rem;
         box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
-        margin-bottom: 1.3rem;
+        margin-bottom: 1.5rem;
     }
 
     .hero-shell::after {
         content: '';
         position: absolute;
-        inset: auto -70px -90px auto;
-        width: 240px;
-        height: 240px;
-        background: radial-gradient(circle, rgba(255, 90, 31, 0.18), transparent 65%);
-        pointer-events: none;
-    }
-
-    .hero-shell::before {
-        content: '';
-        position: absolute;
-        inset: 0 auto auto 0;
-        width: 180px;
-        height: 180px;
-        background: radial-gradient(circle, rgba(29, 78, 216, 0.10), transparent 70%);
+        inset: auto -30px -50px auto;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(255, 107, 53, 0.15), transparent 70%);
         pointer-events: none;
     }
 
@@ -118,316 +108,402 @@ st.markdown("""
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: rgba(255, 90, 31, 0.10);
+        background: rgba(255, 107, 53, 0.12);
         color: var(--accent) !important;
-        border: 1px solid rgba(255, 90, 31, 0.18);
+        border: 1px solid rgba(255, 107, 53, 0.2);
         border-radius: 999px;
-        padding: 0.45rem 0.85rem;
-        font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        margin-bottom: 0.85rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
     }
 
     .hero-title {
-        font-size: clamp(2rem, 3.6vw, 3.2rem);
-        line-height: 1.04;
-        margin: 0 0 0.65rem 0;
+        font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+        line-height: 1.1;
+        margin: 0 0 0.8rem 0;
+        font-weight: 800;
+        color: #0f172a !important;
     }
 
     .hero-subtitle {
-        max-width: 760px;
+        max-width: 800px;
         color: var(--muted) !important;
-        font-size: 1.02rem;
-        line-height: 1.7;
+        font-size: 1.1rem;
+        line-height: 1.6;
         margin: 0;
     }
 
     .menu-card {
-        background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.92));
-        border: 1px solid var(--border);
+        background: var(--surface);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: var(--radius-lg);
-        padding: 14px;
+        padding: 16px;
         text-align: center;
         box-shadow: var(--shadow-soft);
-        margin-bottom: 20px;
-        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        margin-bottom: 24px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .menu-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(255, 90, 31, 0.26);
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        transform: translateY(-6px) scale(1.02);
+        border-color: rgba(255, 107, 53, 0.3);
+        box-shadow: var(--shadow-hover);
     }
 
     .menu-card img {
         width: 100%;
-        height: 180px;
+        height: 170px;
         object-fit: contain;
-        background: linear-gradient(180deg, #fffaf6 0%, #ffffff 100%);
-        border-radius: 14px;
-        border: 1px solid rgba(15, 23, 42, 0.06);
-        padding: 6px;
+        background: white;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.04);
+        padding: 8px;
     }
 
     .menu-card h4 {
-        margin-top: 0.8rem;
-        margin-bottom: 0.35rem;
-        font-size: 1.05rem;
+        margin-top: 1rem;
+        margin-bottom: 0.4rem;
+        font-size: 1.1rem;
+        font-weight: 700;
     }
 
     .menu-card p {
-        margin-bottom: 0.15rem;
+        margin-bottom: 0.2rem;
         color: var(--muted) !important;
-        font-size: 0.92rem;
+        font-size: 0.95rem;
     }
 
     .info-box {
-        background: linear-gradient(135deg, rgba(255, 90, 31, 0.08), rgba(255, 255, 255, 0.98));
-        border: 1px solid rgba(255, 90, 31, 0.12);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-left: 6px solid var(--accent);
-        padding: 1.2rem 1.25rem;
+        padding: 1.4rem 1.5rem;
         border-radius: var(--radius-md);
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         box-shadow: var(--shadow-soft);
     }
 
     .info-box h3, .info-box h4 {
         margin-top: 0;
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.7rem;
+        color: #0f172a !important;
     }
 
     .winner-tag {
         display: inline-flex;
         align-items: center;
-        background: linear-gradient(135deg, var(--accent), #ff8f59);
+        background: linear-gradient(135deg, var(--accent), var(--accent-deep));
         color: white !important;
-        padding: 0.28rem 0.8rem;
+        padding: 0.35rem 0.9rem;
         border-radius: 999px;
         font-weight: 800;
-        letter-spacing: 0.02em;
-        box-shadow: 0 10px 24px rgba(255, 90, 31, 0.24);
+        letter-spacing: 0.04em;
+        box-shadow: 0 12px 28px rgba(255, 107, 53, 0.3);
+        animation: pulseSubtle 2s infinite;
+    }
+
+    @keyframes pulseSubtle {
+        0% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
     }
 
     .section-title {
         display: flex;
         align-items: baseline;
-        gap: 0.7rem;
-        margin: 0.4rem 0 0.75rem;
+        gap: 0.8rem;
+        margin: 0.5rem 0 1rem;
     }
 
     .section-title h2,
     .section-title h3 {
         margin: 0;
-        font-size: 1.55rem;
+        font-size: 1.6rem;
     }
 
     .section-title span {
         color: var(--muted) !important;
-        font-size: 0.92rem;
+        font-size: 0.95rem;
     }
 
     .quick-strip {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.85rem;
-        margin: 0 0 1rem;
+        gap: 1rem;
+        margin: 0 0 1.2rem;
     }
 
     .quick-chip {
-        background: rgba(255,255,255,0.78);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.9rem 1rem;
+        background: var(--surface);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 1.1rem 1.2rem;
         box-shadow: var(--shadow-soft);
+        transition: transform 0.2s ease;
+    }
+    
+    .quick-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
     }
 
     .quick-chip strong {
         display: block;
-        font-size: 0.98rem;
-        margin-bottom: 0.25rem;
+        font-size: 1.05rem;
+        margin-bottom: 0.3rem;
         color: var(--text) !important;
     }
 
     .quick-chip span {
         color: var(--muted) !important;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 
     .topbar {
         display: grid;
         grid-template-columns: 1.2fr 1.4fr 0.9fr;
-        gap: 0.9rem;
+        gap: 1rem;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .topbar-brand, .topbar-meta {
+        background: var(--surface);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 0.8rem 1rem;
+        box-shadow: var(--shadow-soft);
     }
 
     .topbar-brand {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
-        background: rgba(255,255,255,0.8);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.75rem 0.9rem;
-        box-shadow: var(--shadow-soft);
+        gap: 0.9rem;
     }
 
     .topbar-mark {
-        width: 38px;
-        height: 38px;
+        width: 42px;
+        height: 42px;
         border-radius: 12px;
         display: grid;
         place-items: center;
-        background: linear-gradient(135deg, var(--accent), #ff8f59);
+        background: linear-gradient(135deg, var(--accent), var(--accent-deep));
         color: white !important;
-        font-size: 1.05rem;
+        font-size: 1.2rem;
         font-weight: 800;
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.25);
     }
 
     .topbar-name {
         margin: 0;
-        font-size: 1.05rem;
+        font-size: 1.1rem;
         line-height: 1.1;
+        font-weight: 700;
     }
 
     .topbar-note {
-        margin: 0.08rem 0 0;
-        font-size: 0.84rem;
+        margin: 0.1rem 0 0;
+        font-size: 0.85rem;
         color: var(--muted) !important;
-    }
-
-    .topbar-search,
-    .topbar-meta {
-        background: rgba(255,255,255,0.8);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.65rem 0.8rem;
-        box-shadow: var(--shadow-soft);
-    }
-
-    .topbar-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.7rem;
     }
 
     .topbar-chip {
         display: inline-flex;
         align-items: center;
-        gap: 0.35rem;
-        padding: 0.4rem 0.7rem;
+        gap: 0.4rem;
+        padding: 0.45rem 0.8rem;
         border-radius: 999px;
-        background: rgba(255, 90, 31, 0.10);
-        color: var(--accent) !important;
-        font-size: 0.8rem;
+        background: rgba(16, 185, 129, 0.12);
+        color: var(--accent-2) !important;
+        font-size: 0.85rem;
         font-weight: 800;
     }
 
     .catalog-panel,
     .cart-panel {
-        background: rgba(255,255,255,0.9);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 26px;
+        background: var(--surface);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 28px;
         box-shadow: var(--shadow);
     }
 
     .catalog-panel {
-        padding: 1rem 1rem 0.25rem;
+        padding: 1.2rem 1.2rem 0.5rem;
     }
 
     .cart-panel {
-        padding: 1rem;
+        padding: 1.2rem;
         position: sticky;
-        top: 1rem;
+        top: 1.2rem;
     }
 
     .menu-filter-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.65rem;
-        margin: 0.25rem 0 1rem;
+        gap: 0.8rem;
+        margin: 0.5rem 0 1.2rem;
     }
 
     .filter-chip {
         display: inline-flex;
         align-items: center;
-        gap: 0.45rem;
-        padding: 0.55rem 0.9rem;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
         border-radius: 999px;
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        background: rgba(255,255,255,0.76);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: rgba(255, 255, 255, 0.6);
         color: var(--muted) !important;
-        font-size: 0.88rem;
+        font-size: 0.9rem;
         font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+    .filter-chip:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-1px);
     }
 
     .filter-chip-active {
-        background: linear-gradient(135deg, rgba(255, 90, 31, 0.14), rgba(255, 122, 69, 0.18));
-        border-color: rgba(255, 90, 31, 0.18);
-        color: var(--text) !important;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(251, 146, 60, 0.1));
+        border-color: rgba(255, 107, 53, 0.2);
+        color: var(--accent) !important;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.08);
+    }
+
+    /* Style the Categories Radio to look like horizontal chips */
+    div[data-testid="stRadio"] > div[role="radiogroup"][aria-label="Categories"] {
+        flex-direction: row !important;
+        gap: 0.8rem !important;
+        flex-wrap: wrap !important;
+    }
+    
+    div[data-testid="stRadio"] > div[role="radiogroup"][aria-label="Categories"] > label {
+        padding: 0.6rem 1.2rem !important;
+        background: rgba(255, 255, 255, 0.7) !important;
+        border: 1px solid rgba(15, 23, 42, 0.06) !important;
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    div[data-testid="stRadio"] > div[role="radiogroup"][aria-label="Categories"] > label[data-checked="true"] {
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(251, 146, 60, 0.1)) !important;
+        border-color: rgba(255, 107, 53, 0.2) !important;
+        color: var(--accent) !important;
     }
 
     .menu-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.95rem;
+        gap: 1rem;
     }
 
     .product-card {
-        background: #ffffff;
+        background: white;
         border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 22px;
+        border-radius: 32px;
         overflow: hidden;
-        box-shadow: var(--shadow-soft);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Ensure Streamlit columns use flex to match card heights */
+    div[data-testid="column"] {
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(255, 90, 31, 0.22);
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+        transform: translateY(-8px);
+        border-color: rgba(255, 107, 53, 0.3);
+        box-shadow: 0 30px 60px rgba(255, 107, 53, 0.12);
+    }
+    
+    .product-image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.03);
     }
 
     .product-image {
-        height: 175px;
-        width: 100%;
-        object-fit: cover;
-        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.08);
     }
 
     .product-body {
-        padding: 0.85rem 0.9rem 0.95rem;
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0.5rem;
     }
 
     .product-name {
-        margin: 0 0 0.35rem;
-        font-size: 1rem;
-        line-height: 1.2;
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #0f172a !important;
+        min-height: 2.8rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .product-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.7rem;
-        color: var(--muted) !important;
-        font-size: 0.84rem;
+        margin-top: 0.4rem;
     }
 
     .product-price {
         font-weight: 900;
-        color: var(--text) !important;
+        color: var(--accent) !important;
+        font-size: 1.3rem;
+    }
+    
+    .product-stall {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--muted) !important;
+        background: rgba(15, 23, 42, 0.05);
+        padding: 0.2rem 0.6rem;
+        border-radius: 8px;
     }
 
     .product-actions {
+        margin-top: 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 0.6rem;
     }
 
     .mini-badge {
@@ -435,10 +511,10 @@ st.markdown("""
         align-items: center;
         gap: 0.3rem;
         border-radius: 999px;
-        background: rgba(15, 118, 110, 0.10);
+        background: rgba(16, 185, 129, 0.12);
         color: var(--accent-2) !important;
-        font-size: 0.76rem;
-        padding: 0.3rem 0.55rem;
+        font-size: 0.8rem;
+        padding: 0.35rem 0.65rem;
         font-weight: 800;
     }
 
@@ -447,60 +523,70 @@ st.markdown("""
         align-items: center;
         justify-content: space-between;
         gap: 0.8rem;
-        margin-bottom: 0.8rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
     }
 
     .cart-head h3 {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        font-weight: 700;
     }
 
     .cart-subtext {
         color: var(--muted) !important;
-        font-size: 0.84rem;
-        margin: 0.12rem 0 0;
+        font-size: 0.9rem;
+        margin: 0.2rem 0 0;
     }
 
     .cart-item {
         display: grid;
-        grid-template-columns: 54px 1fr auto;
-        gap: 0.75rem;
+        grid-template-columns: 60px 1fr auto;
+        gap: 0.9rem;
         align-items: center;
-        background: rgba(255,255,255,0.9);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.7rem;
-        margin-bottom: 0.7rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 20px;
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
         box-shadow: var(--shadow-soft);
+        transition: transform 0.2s ease;
+    }
+    
+    .cart-item:hover {
+        transform: translateY(-2px);
     }
 
     .cart-item img {
-        width: 54px;
-        height: 54px;
+        width: 60px;
+        height: 60px;
         border-radius: 14px;
         object-fit: cover;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
 
     .cart-item-title {
         margin: 0;
-        font-size: 0.94rem;
+        font-size: 0.95rem;
         font-weight: 800;
+        color: #1f2937 !important;
     }
 
     .cart-item-meta {
-        margin: 0.1rem 0 0;
+        margin: 0.15rem 0 0;
         color: var(--muted) !important;
-        font-size: 0.82rem;
+        font-size: 0.85rem;
     }
 
     .cart-summary {
-        background: linear-gradient(135deg, rgba(255, 90, 31, 0.08), rgba(255,255,255,0.96));
-        border: 1px solid rgba(255, 90, 31, 0.10);
-        border-radius: 20px;
-        padding: 0.85rem;
-        margin: 0.8rem 0;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 255, 255, 0.8));
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 107, 53, 0.15);
+        border-radius: 22px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: var(--shadow-soft);
     }
 
     .cart-summary-row {
@@ -508,90 +594,105 @@ st.markdown("""
         align-items: center;
         justify-content: space-between;
         gap: 0.8rem;
-        margin-bottom: 0.35rem;
-        font-size: 0.92rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
     }
 
     .cart-summary-row strong {
         color: var(--text) !important;
+        font-weight: 800;
+        font-size: 1.05rem;
     }
 
     .payment-box {
-        background: rgba(255,255,255,0.84);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.8rem;
-        margin-top: 0.85rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 20px;
+        padding: 1rem;
+        margin-top: 1rem;
+        box-shadow: var(--shadow-soft);
     }
 
     .action-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.65rem;
-        margin-top: 0.85rem;
+        gap: 0.8rem;
+        margin-top: 1rem;
     }
 
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,249,244,0.96)) !important;
-        border-right: 1px solid rgba(15, 23, 42, 0.06);
-        box-shadow: 10px 0 36px rgba(15, 23, 42, 0.05);
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 10px 0 40px rgba(15, 23, 42, 0.03);
     }
 
     [data-testid="stSidebar"] > div {
-        padding-top: 1.2rem;
-    }
-
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3,
-    section[data-testid="stSidebar"] p,
-    section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] label {
-        color: var(--text) !important;
+        padding-top: 1.5rem;
     }
 
     .sidebar-brand {
-        padding: 0.35rem 0.35rem 1rem;
-        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-        margin-bottom: 1rem;
+        padding: 0.5rem 0.5rem 1.2rem;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+        margin-bottom: 1.2rem;
     }
 
     .sidebar-kicker {
+        display: inline-block;
+        background: rgba(255, 107, 53, 0.12);
         color: var(--accent) !important;
-        font-size: 0.78rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
+        padding: 0.35rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.6rem;
+        border: 1px solid rgba(255, 107, 53, 0.2);
     }
 
     .sidebar-title {
         margin: 0;
-        font-size: 1.7rem;
-        line-height: 1;
+        font-size: 1.8rem;
+        line-height: 1.1;
+        font-weight: 800;
     }
 
     section[data-testid="stSidebar"] [data-baseweb="radio"] {
-        background: rgba(255,255,255,0.75);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 18px;
-        padding: 0.25rem;
-        box-shadow: var(--shadow-soft);
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(15, 23, 42, 0.05) !important;
+        border-radius: 24px !important;
+        padding: 1.2rem !important;
+        margin-top: 0.5rem !important;
+        box-shadow: var(--shadow-soft) !important;
     }
 
     section[data-testid="stSidebar"] [data-baseweb="radio"] label {
-        padding: 0.75rem 0.85rem;
-        border-radius: 14px;
-        transition: background 0.18s ease, transform 0.18s ease;
+        padding: 1rem 1.2rem !important;
+        border-radius: 18px !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.6rem !important;
+        border: 1px solid transparent !important;
     }
 
     section[data-testid="stSidebar"] [data-baseweb="radio"] label:hover {
-        background: rgba(255, 90, 31, 0.06);
-        transform: translateX(2px);
+        background: rgba(255, 107, 53, 0.05);
+        transform: translateX(4px);
     }
 
     section[data-testid="stSidebar"] [role="radiogroup"] > label[data-checked="true"] {
-        background: linear-gradient(135deg, rgba(255, 90, 31, 0.12), rgba(255, 122, 69, 0.10));
+        background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
+        color: white !important;
+        border: 1px solid rgba(255, 107, 53, 0.4) !important;
+        box-shadow: 0 12px 24px rgba(255, 107, 53, 0.3) !important;
+        transform: scale(1.04) translateX(5px) !important;
+    }
+    
+    section[data-testid="stSidebar"] [role="radiogroup"] > label[data-checked="true"] div[data-testid="stMarkdownContainer"] p {
+        color: white !important;
     }
 
     .stRadio > div,
@@ -600,73 +701,133 @@ st.markdown("""
     .stNumberInput,
     .stSlider,
     .stSelectbox {
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.9rem;
     }
 
     input, [data-baseweb="select"] > div, [data-baseweb="base-input"] > div {
-        background-color: rgba(255,255,255,0.96) !important;
-        color: var(--text) !important;
-        border: 1px solid rgba(15, 23, 42, 0.14) !important;
-        border-radius: 14px !important;
-        box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        border-radius: 16px !important;
+        padding: 0.6rem 1rem !important;
+        transition: all 0.2s ease !important;
+        font-weight: 600 !important;
+    }
+    
+    input::placeholder {
+        color: #94a3b8 !important;
+        opacity: 1 !important;
     }
 
     input:focus, [data-baseweb="select"] > div:focus-within, [data-baseweb="base-input"] > div:focus-within {
-        border-color: rgba(255, 90, 31, 0.55) !important;
-        box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.12) !important;
+        border-color: rgba(255, 107, 53, 0.6) !important;
+        box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15) !important;
+        background-color: #ffffff !important;
+    }
+
+    /* DROPDOWN & POPOVER FIXES - Force Light Theme */
+    div[data-baseweb="popover"], 
+    div[role="listbox"], 
+    div[data-baseweb="menu"], 
+    ul[role="listbox"],
+    div[data-baseweb="select"] ul,
+    div[data-baseweb="popover"] > div {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12) !important;
+    }
+
+    div[data-baseweb="popover"] *, 
+    div[role="listbox"] *, 
+    div[data-baseweb="menu"] *, 
+    ul[role="listbox"] *,
+    div[data-baseweb="select"] ul * {
+        color: #1e293b !important;
+        font-weight: 500 !important;
+    }
+
+    [role="option"]:hover, [role="menuitem"]:hover, 
+    div[role="listbox"] [role="option"]:hover {
+        background-color: rgba(255, 107, 53, 0.08) !important;
+        color: var(--accent) !important;
+    }
+
+    /* Hide Streamlit specific layout items */
+    header { visibility: hidden !important; }
+    .stAppDeployButton { display: none !important; }
+    #MainMenu { visibility: hidden !important; }
+    footer { visibility: hidden !important; }
+    div[data-testid="stStatusWidget"] { visibility: hidden !important; }
+    
+    /* Ensure the main container is not squashed by hidden header */
+    .stApp {
+        margin-top: -50px;
     }
 
     .stButton > button {
-        background: linear-gradient(135deg, var(--accent), #ff7a45) !important;
+        background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
         color: white !important;
         border: none !important;
-        border-radius: 14px !important;
-        padding: 0.65rem 1rem !important;
+        border-radius: 18px !important;
+        padding: 0.75rem 1.2rem !important;
         font-weight: 800 !important;
-        box-shadow: 0 12px 24px rgba(255, 90, 31, 0.22);
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        font-size: 1rem !important;
+        box-shadow: 0 12px 28px rgba(255, 107, 53, 0.25);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .stButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 14px 28px rgba(255, 90, 31, 0.28);
+        transform: translateY(-2px);
+        box-shadow: 0 16px 36px rgba(255, 107, 53, 0.35);
+        background: linear-gradient(135deg, #ff7a45, #fc9f50) !important;
+    }
+
+    .stButton > button:active {
+        transform: translateY(1px);
     }
 
     div[data-testid="metric-container"] {
-        background: rgba(255, 255, 255, 0.88);
-        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
         border-radius: var(--radius-md);
-        padding: 0.95rem 1rem;
+        padding: 1.2rem;
         box-shadow: var(--shadow-soft);
+        transition: transform 0.2s ease;
+    }
+    
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-4px);
     }
 
     div[data-testid="metric-container"] label {
         color: var(--muted) !important;
-        font-size: 0.92rem;
+        font-size: 0.95rem;
+        font-weight: 600;
     }
 
     div[data-testid="metric-container"] [data-testid="stMetricValue"] {
         font-family: 'Space Grotesk', sans-serif;
         letter-spacing: -0.04em;
+        color: var(--accent) !important;
     }
 
-    div[data-testid="stDataFrame"] {
+    div[data-testid="stDataFrame"], div[data-testid="stTable"] {
         border-radius: var(--radius-md);
         overflow: hidden;
         box-shadow: var(--shadow-soft);
-    }
-
-    div[data-testid="stTable"] {
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(255,255,255,0.6);
     }
 
     .block-container .stTabs [data-baseweb="tab-list"] {
-        gap: 0.55rem;
-        background: rgba(255,255,255,0.55);
-        padding: 0.35rem;
+        gap: 0.6rem;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px);
+        padding: 0.4rem;
         border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
     .block-container .stTabs [data-baseweb="tab"] {
@@ -674,42 +835,55 @@ st.markdown("""
         font-weight: 700;
         color: var(--muted) !important;
         background: transparent;
+        padding: 0.6rem 1.2rem;
     }
 
     .block-container .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, rgba(255, 90, 31, 0.16), rgba(255, 122, 69, 0.22)) !important;
-        color: var(--text) !important;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(251, 146, 60, 0.1)) !important;
+        color: var(--accent) !important;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.08);
     }
 
     .stImage img {
-        border-radius: 24px !important;
+        border-radius: 28px !important;
         box-shadow: var(--shadow);
-        border: 1px solid rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transition: all 0.4s ease !important;
+    }
+    
+    .stImage:hover img {
+        transform: scale(1.02);
+        box-shadow: 0 32px 80px rgba(255, 107, 53, 0.15);
+    }
+
+    /* Modern Navbar Search Bar styling */
+    .search-navbar {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(15, 23, 42, 0.05);
+        border-radius: 24px;
+        padding: 0.6rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .search-navbar:hover {
+        border-color: rgba(255, 107, 53, 0.3);
+        box-shadow: 0 12px 36px rgba(255, 107, 53, 0.08);
     }
 
     .stCaption {
         color: var(--muted) !important;
-    }
-
-    @media (max-width: 768px) {
-        .hero-shell {
-            padding: 1.25rem 1rem 1rem;
-        }
-
-        .hero-title {
-            font-size: 1.8rem;
-        }
-
-        .menu-card img {
-            height: 160px;
-        }
-
-        .quick-strip {
-            grid-template-columns: 1fr;
-        }
+        font-weight: 600;
+        margin-top: 0.5rem;
     }
     </style>
     """, unsafe_allow_html=True)
+
 
 
 def render_hero(title, subtitle, badge="FlavorFlow Pro"):
@@ -777,24 +951,24 @@ with st.sidebar:
 
 # --- 1. HOME DASHBOARD ---
 if nav == "🏠 Project Dashboard":
-    top_search, top_lang, top_status = st.columns([2.6, 1.1, 0.9])
-    with top_search:
+    st.markdown("<div class='search-navbar'>", unsafe_allow_html=True)
+    nb_col1, nb_col2 = st.columns([1, 2.5])
+    with nb_col1:
         st.markdown(
             """
-            <div class='topbar-brand'>
+            <div style='display: flex; align-items: center; gap: 0.8rem;'>
                 <div class='topbar-mark'>F</div>
-                <div>
-                    <h3 class='topbar-name'>FlavorFlow</h3>
-                    <p class='topbar-note'>Smart canteen ordering and optimization</p>
+                <div style='line-height:1'>
+                    <h3 style='margin:0; font-size:1.2rem;'>FlavorFlow</h3>
+                    <p style='margin:0.2rem 0 0; font-size:0.8rem; color:var(--muted)'>Smart Canteen App</p>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with top_lang:
-        st.text_input("Search everything here...", placeholder="Search everything here...", label_visibility="collapsed")
-    with top_status:
-        st.selectbox("Language", ["Select Language", "English", "Hindi"], label_visibility="collapsed")
+    with nb_col2:
+        st.text_input("Search everything here", placeholder="Search dashboard menu, items, and labs...", label_visibility="collapsed")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     render_hero(
         "Special Menu For You",
@@ -816,11 +990,7 @@ if nav == "🏠 Project Dashboard":
         render_section_title("Today's Menu", "Cards, filters, and a clean grid layout")
         category_labels = ["All", "Counter 1", "Pizza Oven", "Juice Bar"]
         active_category = st.radio("Categories", category_labels, horizontal=True, label_visibility="collapsed")
-        st.markdown("<div class='menu-filter-row'>", unsafe_allow_html=True)
-        for label in category_labels:
-            active_class = "filter-chip-active" if active_category == label else ""
-            st.markdown(f"<span class='filter-chip {active_class}'>{label}</span>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Removing redundant manual chip rendering loop as requested
 
         filtered_menu = MENU if active_category == "All" else [item for item in MENU if item['stall'] == active_category]
         search_term = st.text_input("", placeholder="Search by dish name", label_visibility="collapsed")
@@ -834,19 +1004,21 @@ if nav == "🏠 Project Dashboard":
             badge_text = f"{item['calories']} cal"
             menu_html.append(item)
 
-        grid_cols = st.columns(2)
+        grid_cols = st.columns(3, gap="large")
         for index, item in enumerate(filtered_menu):
-            col = grid_cols[index % 2]
+            col = grid_cols[index % 3]
             with col:
                 st.markdown(
                     f"""
                     <div class='product-card'>
-                        <img class='product-image' src='{item['image']}' alt='{item['name']}'>
+                        <div class='product-image-container'>
+                            <img class='product-image' src='{item['image']}' alt='{item['name']}'>
+                        </div>
                         <div class='product-body'>
                             <h4 class='product-name'>{item['name']}</h4>
                             <div class='product-meta'>
                                 <span class='product-price'>₹{item['price']}</span>
-                                <span>{item['stall']}</span>
+                                <span class='product-stall'>{item['stall']}</span>
                             </div>
                             <div class='product-actions'>
                                 <span class='mini-badge'>{item['calories']} cal</span>
@@ -857,7 +1029,7 @@ if nav == "🏠 Project Dashboard":
                     unsafe_allow_html=True,
                 )
                 button_key = f"cart_btn_{item['id']}"
-                if st.button(action_label if item['id'] in st.session_state.cart_item_ids else "Add to Cart", key=button_key):
+                if st.button(action_label if item['id'] in st.session_state.cart_item_ids else "Add to Cart", key=button_key, width="stretch" if hasattr(st, 'button') else True):
                     if item['id'] in st.session_state.cart_item_ids:
                         st.session_state.cart_item_ids.remove(item['id'])
                     else:
@@ -941,7 +1113,7 @@ elif nav == "🍱 Order & Pickup Path":
         "Find items quickly, compare search strategies, and generate an optimized pickup path across stalls.",
         "Ordering Flow",
     )
-    st.image("https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=1000", width=600)
+    st.image("https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200", use_container_width=True)
     
     st.subheader("🔍 Intelligent Item Search")
     query = st.text_input("Search for a dish (e.g. Pizza, Burger):")
@@ -965,7 +1137,23 @@ elif nav == "🍱 Order & Pickup Path":
     cols = st.columns(3)
     for i, itm in enumerate(MENU):
         with cols[i % 3]:
-            st.markdown(f"<div class='menu-card'><img src='{itm['image']}'><h4>{itm['name']}</h4><p>₹{itm['price']} | {itm['stall']}</p></div>", unsafe_allow_html=True)
+            st.markdown(
+                f"""
+                <div class='product-card'>
+                    <div class='product-image-container'>
+                        <img class='product-image' src='{itm['image']}' alt='{itm['name']}'>
+                    </div>
+                    <div class='product-body'>
+                        <h4 class='product-name'>{itm['name']}</h4>
+                        <div class='product-meta'>
+                            <span class='product-price'>₹{itm['price']}</span>
+                            <span class='product-stall'>{itm['stall']}</span>
+                        </div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 # --- 3. MEAL BUDGET OPTIMIZER ---
 elif nav == "💰 Meal Budget Optimizer":
@@ -974,7 +1162,7 @@ elif nav == "💰 Meal Budget Optimizer":
         "Choose a budget and let dynamic programming build the best possible meal tray by calorie yield.",
         "Optimization Lab",
     )
-    st.image("https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1000", width=600)
+    st.image("https://images.unsplash.com/photo-1543353071-873f17a7a088?w=1200", use_container_width=True)
     
     st.markdown("<div class='info-box'><b>Algorithm: Dynamic Programming (DP)</b><br>We build a DP Table to find the absolute best calorie combination for your budget. We compare it with the Greedy Strategy.</div>", unsafe_allow_html=True)
     
@@ -992,7 +1180,23 @@ elif nav == "💰 Meal Budget Optimizer":
         cols = st.columns(len(items_dp))
         for i, itm in enumerate(items_dp):
             with cols[i]:
-                st.markdown(f"<div class='menu-card'><img src='{itm['image']}'><br><b>{itm['name']}</b></div>", unsafe_allow_html=True)
+                st.markdown(
+                    f"""
+                    <div class='product-card'>
+                        <div class='product-image-container'>
+                            <img class='product-image' src='{itm['image']}' alt='{itm['name']}'>
+                        </div>
+                        <div class='product-body'>
+                            <h4 class='product-name'>{itm['name']}</h4>
+                            <div class='product-meta'>
+                                <span class='product-price'>₹{itm['price']}</span>
+                                <span class='product-stall'>{itm['stall']}</span>
+                            </div>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
 # --- 4. STAFF & SHIFT LOGIC ---
 elif nav == "👨‍🍳 Staff & Shift Logic":
@@ -1001,7 +1205,7 @@ elif nav == "👨‍🍳 Staff & Shift Logic":
         "Use greedy scheduling and graph coloring to keep kitchen work fast and conflict-free.",
         "Operations Control",
     )
-    st.image("https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1000", width=600)
+    st.image("https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200", use_container_width=True)
     
     tab1, tab2 = st.tabs(["Kitchen Scheduling", "Staff Management"])
     with tab1:
@@ -1028,7 +1232,7 @@ elif nav == "🧪 Algorithmic Lab":
         "A compact showcase of the algorithms behind the app, with direct comparisons and route calculations.",
         "Algorithm Lab",
     )
-    st.image("https://images.unsplash.com/photo-1551288049-bbbda536339a?w=1000", width=600)
+    st.image("https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200", use_container_width=True)
     
     # 1. KARATSUBA
     render_section_title("1. Bulk Calculation", "Divide and conquer: Karatsuba")
